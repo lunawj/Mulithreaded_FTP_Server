@@ -71,27 +71,40 @@ class FTPClient {
             }
             else if(sentence.startsWith("get: ") || sentence.startsWith("retr: "))
             {
-		 port = port +2;
-	         System.out.println(port);
-	         ServerSocket welcomeData = new ServerSocket(port);
+                port = port +2;
+                System.out.println(port);
+                ServerSocket welcomeData = new ServerSocket(port);
+
+                outToServer.writeBytes (port + " " + sentence + " " + '\n');
+
+                Socket dataSocket = welcomeData.accept();
+                DataInputStream inData = new DataInputStream(new BufferedInputStream(dataSocket.getInputStream()));
 
 
-	         //System.out.println("\n \n \nThe files on this server are:");
-	         outToServer.writeBytes (port + " " + sentence + " " + '\n');
+                if (inData.readUTF() == "200: ok"){
+                    File fin = new File("gets.txt");
+                    FileOutputStream fos = new FileOutputStream(fin);
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+                    while(notEnd)
+                    {
+                        modifiedSentence = inData.readUTF();
+                        bw.write(modifiedSentence);
+                        if(modifiedSentence.equals("eof"))
+                            break;
+                        bw.newLine();
+                    }
+                }
+                else if (inData.readUTF() == "550: DNE"){
+                    System.out.println("File does not exist");
+                }
+                else {
+                    System.out.println("Server connection failed");
+                }
 
-	         Socket dataSocket = welcomeData.accept(); 
- 	         DataInputStream inData = new DataInputStream(new BufferedInputStream(dataSocket.getInputStream()));
-                 while(notEnd) 
-                 {
-                     modifiedSentence = inData.readUTF();
-                     if(modifiedSentence.equals("eof"))
-                         break; 
-                     System.out.println("	" + modifiedSentence); 
-                 }
 
-	         welcomeData.close();
-	         dataSocket.close();
-	         System.out.println("\nWhat would you like to do next: \nget: file.txt ||  stor: file.txt  || close");
+                welcomeData.close();
+                dataSocket.close();
+                System.out.println("\nWhat would you like to do next: \nget: file.txt ||  stor: file.txt  || close");
 
 
             }else if(sentence.startsWith("stor: "))
