@@ -71,18 +71,38 @@ class FTPClient {
             }
             else if(sentence.startsWith("get: ") || sentence.startsWith("retr: "))
             {
-		.........................................................
-		.........................................................
-		.........................................................
+		 port = port +2;
+	         System.out.println(port);
+	         ServerSocket welcomeData = new ServerSocket(port);
 
 
+	         //System.out.println("\n \n \nThe files on this server are:");
+	         outToServer.writeBytes (port + " " + sentence + " " + '\n');
 
-	     }else{
+	         Socket dataSocket = welcomeData.accept(); 
+ 	         DataInputStream inData = new DataInputStream(new BufferedInputStream(dataSocket.getInputStream()));
+                 while(notEnd) 
+                 {
+                     modifiedSentence = inData.readUTF();
+                     if(modifiedSentence.equals("eof"))
+                         break; 
+                     System.out.println("	" + modifiedSentence); 
+                 }
+
+	         welcomeData.close();
+	         dataSocket.close();
+	         System.out.println("\nWhat would you like to do next: \nget: file.txt ||  stor: file.txt  || close");
+
+
+            }else if(sentence.startsWith("stor: "))
+            {
+            
+	    }else{
 	             if(sentence.equals("close") || sentence.equals("quit"))
 	             {
 		        clientgo = false;
 	             }
-	             System.out.print("No server exists with that name or server not listening on that port try agian");
+	             System.out.print("No server exists with that name or server not listening on that port try again");
                    
            } 
         }
