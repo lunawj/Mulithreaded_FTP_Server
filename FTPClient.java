@@ -67,11 +67,6 @@ class FTPClient {
             else if(sentence.startsWith("get: ") || sentence.startsWith("retr: "))
             {
 		.........................................................
-		.........................................................
-		.........................................................
-
-
-
 	     }else{
 	             if(sentence.equals("close") || sentence.equals("quit"))
 	             {
