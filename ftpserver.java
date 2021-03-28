@@ -5,6 +5,14 @@ import java.text.*;
 import java.lang.*;
 import javax.swing.*;
 
+/******************************************************************************
+ @author: Justin Von Kulajta Winn and Wesley Luna
+ @Version: 1.0
+ * FTPserver is a server function called by the file 'ftpmulti.java' that
+ * interacts with a client and establishes a FTP connection. The server takes
+ * in commands sent in by the client and returns files, a list of files, or
+ * takes in a file from the client.
+ *****************************************************************************/
 public class ftpserver extends Thread{
     private Socket connectionSocket;
     int port;
