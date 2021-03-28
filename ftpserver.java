@@ -36,7 +36,7 @@ import javax.swing.*;
             String clientCommand;
             byte[] data;
             String frstln;
-                    
+            int fileFound = 0;
             while(true)
             {
                 if(count==1)
@@ -108,8 +108,7 @@ import javax.swing.*;
        
        		Socket dataSocket = new Socket("35.39.165.81", port);
                       //Socket dataSocket = new Socket(connectionSocket.getInetAddress(), port);
-                      DataOutputStream  dataOutToClient = 
-                      new DataOutputStream(dataSocket.getOutputStream());
+                      DataOutputStream  dataOutToClient = new DataOutputStream(dataSocket.getOutputStream());
                       File dir = new File(curDir);
     		      String filenameArg = tokens.nextToken();
                       String[] children = dir.list();
@@ -125,13 +124,17 @@ import javax.swing.*;
                               String filename = children[i];
 
                               //if(filename.endsWith(".txt"))
-                              if(filename == filenameArg)
+                              System.out.println(filename + " = " + filenameArg + "?");
+                              if(filename.equals(filenameArg))
                               {
+                              fileFound = 1;
                               //dataOutToClient.writeUTF(children[i]);
                               //open file 
-                              File cFile = new File(curDir + filename);
+                              //modifiedSentence.equals("eof")
+                              File cFile = new File(curDir + "//" + filename);
                               BufferedReader brFile = new BufferedReader(new FileReader(cFile));
                               String str;
+                              dataOutToClient.writeUTF("200: ok");
   			      while ((str = brFile.readLine()) != null)
     					dataOutToClient.writeUTF(str);
                               //read line by line
@@ -147,7 +150,11 @@ import javax.swing.*;
 
      
                           }//for
-
+			if(fileFound == 0)
+                              {
+                              dataOutToClient.writeUTF("550: DNE");
+                              }
+                              fileFound = 0;
                            dataSocket.close();
 		          //System.out.println("Data Socket closed");
                      }//else
