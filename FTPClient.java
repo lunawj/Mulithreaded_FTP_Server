@@ -8,6 +8,14 @@ import javax.swing.*;
 //connect 35.39.165.81 10123
 //get: test1.txt
 //connect 192.168.217.1 10123
+/******************************************************************************
+ @author: Justin Von Kulajta Winn and Wesley Luna
+ @Version: 1.0
+  * FTPClient connects to a server and establishes a FTP connection with it.
+ * This is done by creating a control connection and then sending commands over
+ * the control connection. It creates data connections to pass data. This
+ * includes sending a file, receiving a file, and receiving a list of files.
+ *****************************************************************************/
 class FTPClient {
 
     public static void main(String argv[]) throws Exception
