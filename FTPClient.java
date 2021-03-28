@@ -1,9 +1,11 @@
- import java.io.*;
+import java.io.*;
         import java.net.*;
         import java.util.*;
         import java.text.*;
         import java.lang.*;
         import javax.swing.*;
+
+//connect 35.39.165.81 10123
 class FTPClient {
 
     public static void main(String argv[]) throws Exception
@@ -14,10 +16,10 @@ class FTPClient {
         int number=1;
         boolean notEnd = true;
         int port1=1221;
-        int port = 1200;
+        int port = 10133;
         String statusCode;
         boolean clientgo = true;
-
+	Socket ControlSocket;
         System.out.println("Welcome to the simple FTP App   \n     Commands  \nconnect servername port# connects to a specified server \nlist: lists files on server \nget: fileName.txt downloads that text file to your current directory \nstor: fileName.txt Stores the file on the server \nclose terminates the connection to the server");
         BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         sentence = inFromUser.readLine();
@@ -30,7 +32,7 @@ class FTPClient {
                 serverName = tokens.nextToken();
                 port1 = Integer.parseInt(tokens.nextToken());
                 System.out.println("You are connected to " + serverName);
-                Socket ControlSocket= new Socket(serverName, port1);
+                ControlSocket = new Socket(serverName, port1);
                 break;
             }
             sentence = inFromUser.readLine();
@@ -53,14 +55,19 @@ class FTPClient {
 
                 System.out.println("\n \n \nThe files on this server are:");
                 outToServer.writeBytes (port + " " + sentence + " " + '\n');
-
-                Socket dataSocket =welcomeData.accept();
+                Socket dataSocket = welcomeData.accept();
+                                    System.out.println("Not in if");
                 DataInputStream inData = new DataInputStream(new BufferedInputStream(dataSocket.getInputStream()));
+                                    System.out.println("Not in if");
                 while(notEnd)
                 {
                     modifiedSentence = inData.readUTF();
+                    System.out.println("Not in if");
                     if(modifiedSentence.equals("eof"))
+                    {
+                        System.out.println("Entered if");
                         break;
+                    }
                     System.out.println("	" + modifiedSentence);
                 }
 
