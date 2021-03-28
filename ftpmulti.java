@@ -1,6 +1,11 @@
 import java.net.*;
 import java.io.*;
 
+/******************************************************************************
+ @author: Justin Von Kulajta Winn and Wesley Luna
+ @Version: 1.0
+  * FTPMulti allows the FTPserver to handle multiple clients at once.
+ *****************************************************************************/
 public class ftpmulti {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
