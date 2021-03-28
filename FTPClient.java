@@ -6,6 +6,8 @@ import java.io.*;
         import javax.swing.*;
 
 //connect 35.39.165.81 10123
+//get: test1.txt
+//connect 192.168.217.1 10123
 class FTPClient {
 
     public static void main(String argv[]) throws Exception
@@ -47,18 +49,16 @@ class FTPClient {
 
             if(sentence.equals("list:"))
             {
+	port = port +2;
+	    System.out.println(port);
+	    ServerSocket welcomeData = new ServerSocket(port);
 
-                port = port +2;
-                System.out.println(port);
-                ServerSocket welcomeData = new ServerSocket(port);
 
+	    System.out.println("\n \n \nThe files on this server are:");
+	    outToServer.writeBytes (port + " " + sentence + " " + '\n');
 
-                System.out.println("\n \n \nThe files on this server are:");
-                outToServer.writeBytes (port + " " + sentence + " " + '\n');
-                Socket dataSocket = welcomeData.accept();
-                                    System.out.println("Not in if");
-                DataInputStream inData = new DataInputStream(new BufferedInputStream(dataSocket.getInputStream()));
-                                    System.out.println("Not in if");
+	    Socket dataSocket =welcomeData.accept(); 
+ 	    DataInputStream inData = new DataInputStream(new BufferedInputStream(dataSocket.getInputStream()));
                 while(notEnd)
                 {
                     modifiedSentence = inData.readUTF();
@@ -97,9 +97,10 @@ class FTPClient {
                     while(notEnd)
                     {
                         modifiedSentence = inData.readUTF();
-                        bw.write(modifiedSentence);
+                        System.out.println(modifiedSentence);
                         if(modifiedSentence.equals("eof"))
                             break;
+                        bw.write(modifiedSentence);
                         bw.newLine();
                     }
                     //close file

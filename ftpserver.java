@@ -55,24 +55,28 @@ import javax.swing.*;
                   clientCommand = tokens.nextToken();
                   //System.out.println(clientCommand);
 
-
+		
                   if(clientCommand.equals("list:"))
                   { 
                   System.out.println("In server list");
                       String curDir = System.getProperty("user.dir");
-       
-                      Socket dataSocket = new Socket(connectionSocket.getInetAddress(), port);
-                      DataOutputStream  dataOutToClient = 
-                      new DataOutputStream(dataSocket.getOutputStream());
+       System.out.println("In server list port: " + port + "IP: " + connectionSocket.getInetAddress());
+                      Socket dataSocket = new Socket("35.39.165.81", port);
+                      //Socket dataSocket = new Socket(connectionSocket.getInetAddress(), port);
+                      System.out.println("In server list2");
+                      DataOutputStream  dataOutToClient = new DataOutputStream(dataSocket.getOutputStream());
+                      System.out.println("In server list3");
                       File dir = new File(curDir);
-    
+    			System.out.println("In server list4");
                       String[] children = dir.list();
                       if (children == null) 
                       {
                           // Either dir does not exist or is not a directory
+                          System.out.println("no children");
                       } 
                       else 
                       {
+                      System.out.println("list else");
                           for (int i=0; i<children.length; i++)
                           {
                               // Get filename of file or directory
@@ -80,18 +84,18 @@ import javax.swing.*;
 
                               if(filename.endsWith(".txt"))
                                 dataOutToClient.writeUTF(children[i]);
-                             //System.out.println(filename);
+                             System.out.println(filename);
                              if(i-1==children.length-2)
                              {
                                  dataOutToClient.writeUTF("eof");
-                                 // System.out.println("eof");
+                                 System.out.println("eof");
                              }//if(i-1)
 
      
                           }//for
 
                            dataSocket.close();
-		          //System.out.println("Data Socket closed");
+		          System.out.println("Data Socket closed");
                      }//else
         
 
@@ -102,7 +106,8 @@ import javax.swing.*;
                 {
                       String curDir = System.getProperty("user.dir");
        
-                      Socket dataSocket = new Socket(connectionSocket.getInetAddress(), port);
+       		Socket dataSocket = new Socket("35.39.165.81", port);
+                      //Socket dataSocket = new Socket(connectionSocket.getInetAddress(), port);
                       DataOutputStream  dataOutToClient = 
                       new DataOutputStream(dataSocket.getOutputStream());
                       File dir = new File(curDir);

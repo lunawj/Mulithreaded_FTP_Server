@@ -10,7 +10,7 @@ public class ftpmulti {
         try {
             serverSocket = new ServerSocket(10123);
         } catch (IOException e) {
-            System.err.println("Could not listen on port: 1200.");
+            System.err.println("Could not listen on port: 10123.");
             System.exit(-1);
         }
 
