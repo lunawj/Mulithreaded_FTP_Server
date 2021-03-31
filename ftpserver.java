@@ -68,17 +68,13 @@ public class ftpserver extends Thread {
 
 
             if (clientCommand.equals("list:")) {
-                System.out.println("In server list");
                 String curDir = System.getProperty("user.dir");
                 System.out.println("In server list port: " + port + "IP: " + connectionSocket.getInetAddress());
                 //Socket dataSocket = new Socket(ipAddress, port);
                 Socket dataSocket = new Socket(connectionSocket.getLocalAddress(), port);
                 //Socket dataSocket = new Socket(connectionSocket.getInetAddress(), port);
-                System.out.println("In server list2");
                 DataOutputStream dataOutToClient = new DataOutputStream(dataSocket.getOutputStream());
-                System.out.println("In server list3");
                 File dir = new File(curDir);
-                System.out.println("In server list4");
                 String[] children = dir.list();
                 if (children == null) {
                     // Either dir does not exist or is not a directory
@@ -129,6 +125,7 @@ public class ftpserver extends Thread {
                         //System.out.println(filename + " = " + filenameArg + "?");
                         if (filename.equals(filenameArg)) {
                             fileFound = 1;
+                            System.out.println(filename + " found. Sending to client.");
                             //dataOutToClient.writeUTF(children[i]);
                             //open file
                             //modifiedSentence.equals("eof")
@@ -182,9 +179,14 @@ public class ftpserver extends Thread {
                     bw.write(modifiedSentence);
                     bw.newLine();
                 }
+                System.out.println(filename + " found. Getting from client.");
                 bw.close(); //close file
                 dataSocket.close(); //close socket
 
+            } else if (clientCommand.equals("close:") || clientCommand.equals("quit:")) {
+            	System.out.println(connectionSocket.getLocalAddress() + " has disconnected");
+            	connectionSocket.close();
+            	
             }
 
 

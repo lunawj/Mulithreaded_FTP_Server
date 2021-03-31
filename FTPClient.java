@@ -5,8 +5,8 @@ import java.text.*;
 import java.lang.*;
 import javax.swing.*;
 
-//connect 35.39.165.78 10123
-//connect 192.168.217.19 10123
+//connect 35.39.165.80 10123
+//connect 192.168.217.21 10123
 //get: test1.txt
 /******************************************************************************
  @author: Justin Von Kulajta Winn and Wesley Luna
@@ -162,21 +162,17 @@ class FTPClient {
                 }
                 fileFound = 0;
                 SocketData.close();
-
-
-
-
-
                 welcomeData.close();
 
                 System.out.println("\nWhat would you like to do next: \nget: file.txt ||  stor: file.txt  || close");
 
-            } else {
-                if (sentence.equals("close") || sentence.equals("quit")) {
+            } else if (sentence.equals("close:") || sentence.equals("quit")) {
+                    outToServer.writeBytes(port + " " + sentence + " " + '\n');
                     clientgo = false;
+                    System.out.println("Connection to server closed.");
                     ControlSocket.close();
-                }
-                System.out.print("No server exists with that name or server not listening on that port try again");
+            }else{
+                System.out.println("No server exists with that name or server not listening on that port try again");
             }
         }
     }
